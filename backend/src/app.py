@@ -233,8 +233,33 @@ async def update_task(task_id: int, updates: TaskUpdate) -> Task:
 
     Indice: Regardez comment create_task fonctionne pour vous inspirer
     """
-    # TODO: Votre code ici
-    raise HTTPException(status_code=501, detail="Update not implemented yet - complete this function!")
+    # Implémentation de la mise à jour partielle de la tâche
+    if task_id not in tasks_db:
+        raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+
+    existing_task = tasks_db[task_id]
+    update_data = updates.model_dump(exclude_unset=True)
+
+    # Valider le titre si fourni
+    if "title" in update_data:
+        title = update_data.get("title")
+        if not title or not title.strip():
+            raise HTTPException(status_code=422, detail="Title cannot be empty")
+
+    task = Task(
+        id=existing_task.id,
+        title=update_data.get("title", existing_task.title),
+        description=update_data.get("description", existing_task.description),
+        status=update_data.get("status", existing_task.status),
+        priority=update_data.get("priority", existing_task.priority),
+        assignee=update_data.get("assignee", existing_task.assignee),
+        due_date=update_data.get("due_date", existing_task.due_date),
+        created_at=existing_task.created_at,
+        updated_at=datetime.utcnow()
+    )
+
+    tasks_db[task_id] = task
+    return task
 
 
 @app.delete("/tasks/{task_id}", status_code=204)
