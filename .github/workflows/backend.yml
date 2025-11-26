@@ -12,7 +12,8 @@ jobs:
         with:
           python-version: '3.13'
           cache: 'pip' # caching pip dependencies
-      - run:
+      - run: |
+          python -m pip install uvicorn
           pip install -r backend/requirements.txt
       - name: Run backend tests
         run: |
