@@ -14,7 +14,6 @@ jobs:
           cache: 'pip' # caching pip dependencies
       - run: |
           pip install uv
-          pip install uvicorn
           pip install -r backend/requirements.txt
           cd backend
           uv run pytest -v --cov
