@@ -17,11 +17,6 @@ import pytest
 # PARTIE 1 : TESTS EXEMPLES (Apprenez de ceux-ci !)
 # =============================================================================
 
-def test_health_check(client):
-    response = client.get("/health")
-    assert response.status_code == 200
-    assert response.json()["status"] == "BROKEN" # ❌ Faux exprès !
-
 def test_root_endpoint(client):
     """
     EXEMPLE : Tester un point de terminaison GET simple.
@@ -44,7 +39,7 @@ def test_health_check(client):
     response = client.get("/health")
 
     assert response.status_code == 200
-    assert response.json()["status"] == "healthy"
+    assert response.json()["status"] == "BROKEN" # ❌ Faux exprès !
 
 
 def test_create_task(client):
