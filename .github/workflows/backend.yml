@@ -8,10 +8,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
           cache: 'pip' # caching pip dependencies
-      - run: |
+      - run:
+          pip install -r backend/requirements.txt
+      - name: Run backend tests
+        run: |
           cd backend
           uv run pytest -v --cov
